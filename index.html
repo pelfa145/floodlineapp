@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#036666" />
+  <title>Dumingag Flood Safety — Local Guide</title>
+    <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="app" role="main">
+    <header class="header">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2L4 7v7c0 5 3.5 9 8 10 4.5-1 8-5 8-10V7l-8-5z"/></svg>
+        <div>
+          <h1>Flood Safety: Dumingag</h1>
+          <p class="muted">Local DRRM verified guidance</p>
+        </div>
+      </div>
+      <div class="emergency">
+        <button class="call-btn copy-phone-btn" type="button" data-phone="09098046609" data-label="MDRRMO Hotline" aria-label="Copy MDRRMO hotline number">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 01.99-.27 11.72 11.72 0 003.7.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h2.5a1 1 0 011 1 11.72 11.72 0 00.59 3.7 1 1 0 01-.27.99l-2.2 2.2z"/></svg>
+          Copy MDRRMO
+        </button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <h2>Stay safe. Be prepared.</h2>
+        <p class="muted">Verified safety protocols for the Dumingag community, focusing on areas near DSHS and local waterways.</p>
+      </div>
+      <div class="quick-actions">
+        <a class="btn" href="status.html">Live Status</a>
+        <button class="btn ghost copy-phone-btn" type="button" data-phone="09098046609" data-label="MDRRMO Hotline">Copy MDRRMO #</button>
+        <a class="btn ghost" href="https://www.dropbox.com/scl/fi/pzco544w31p7c0rp4fb57/floodline.apk?rlkey=jn0imebdoydwgdpkj4mfan65l&st=3mpe5vxh&dl=1" target="_blank" rel="noopener noreferrer">Download App</a>
+        <button class="btn" id="shareBtn">Share</button>
+      </div>
+    </section>
+
+    <nav class="tabs" role="tablist">
+      <input id="tab-before" type="radio" name="tab" checked>
+      <label for="tab-before" role="tab">Before</label>
+
+      <input id="tab-during" type="radio" name="tab">
+      <label for="tab-during" role="tab">During</label>
+
+      <input id="tab-after" type="radio" name="tab">
+      <label for="tab-after" role="tab">After</label>
+
+      <input id="tab-dos" type="radio" name="tab">
+      <label for="tab-dos" role="tab">Do's & Don'ts</label>
+
+      <input id="tab-map" type="radio" name="tab">
+      <label for="tab-map" role="tab">Creek Map</label>
+
+      <input id="tab-urgent" type="radio" name="tab">
+      <label for="tab-urgent" role="tab">Hotlines</label>
+
+      <div class="panels">
+        <section id="panel-before" class="panel">
+           <h3>Before a Flood</h3>
+           <ul class="checklist">
+            <li><strong>Go-Bag Ready</strong> — Pack 3 days of food, clean water, flashlight, and extra batteries.</li>
+            <li><strong>Secure Documents</strong> — Place birth certificates and IDs in a waterproof plastic pouch.</li>
+            <li><strong>Know Your Route</strong> — Identify the quickest path from your Purok to the designated evacuation center.</li>
+            <li><strong>Elevate Belongings</strong> — Move electronics and appliances to the second floor or higher platforms.</li>
+            <li><strong>Check Drainage</strong> — Ensure small canals near your home are clear of debris to prevent clogging.</li>
+          </ul>
+        </section>
+        
+        <section id="panel-during" class="panel">
+            <h3>During a Flood</h3>
+            <ul class="checklist">
+             <li><strong>Power Down</strong> — Switch off the main electrical breaker and unplug all appliances.</li>
+             <li><strong>Stay High</strong> — If trapped, move to the highest floor. Avoid attics without a roof exit.</li>
+             <li><strong>Flash Floods</strong> — If you hear a roar or see water rising rapidly near the creek, move immediately.</li>
+             <li><strong>No Wading</strong> — Do not walk through moving water; 6 inches is enough to knock an adult down.</li>
+             <li><strong>Monitor Radio</strong> — Keep a battery-operated radio tuned to local emergency broadcasts.</li>
+           </ul>
+        </section>
+
+        <section id="panel-after" class="panel">
+            <h3>After a Flood</h3>
+            <ul class="checklist">
+             <li><strong>Check Structure</strong> — Look for cracks or shifting in your home before entering.</li>
+             <li><strong>Sanitize Everything</strong> — Assume flood water is contaminated; scrub walls and floors with bleach.</li>
+             <li><strong>Water Safety</strong> — Boil water for at least 15 minutes before drinking or using for cooking.</li>
+             <li><strong>Snake Awareness</strong> — Be careful of snakes or insects that may have sought refuge in your home.</li>
+             <li><strong>Wait for 'All Clear'</strong> — Do not return home until MDRRMO officially declares the area safe.</li>
+           </ul>
+        </section>
+
+        <section id="panel-dos" class="panel">
+          <h3>General Flood Safety</h3>
+          <h4>What to Do:</h4>
+          <ul class="checklist">
+            <li>Listen to the radio or television for the latest information and instructions.</li>
+            <li>Be aware of streams, drainage channels, and other areas known to flood suddenly.</li>
+            <li>If you must evacuate, secure your home and take your emergency kit.</li>
+            <li>Turn off utilities at the main switches or valves if instructed to do so.</li>
+          </ul>
+          <h4>What Not to Do:</h4>
+          <ul class="checklist">
+            <li>Do not walk through moving water. Six inches of moving water can make you fall.</li>
+            <li>Do not drive into flooded areas. It's easy to be swept away.</li>
+            <li>Do not touch electrical equipment if you are wet or standing in water.</li>
+            <li>Do not eat any food that has come into contact with floodwater.</li>
+          </ul>
+        </section>
+
+        <section id="panel-map" class="panel">
+          <h3>Local Creek Hazards</h3>
+          <p>Areas near Dumingag National High School (DSHS) and nearby waterways most affected by rising water.</p>
+          <div class="map-container" style="margin-bottom: 1rem;">
+            <img id="zoomable-map" src="floodpronemap.png" alt="Flood Prone Map" style="width: 100%; border-radius: 12px;">
+          </div>
+          <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3950.55!2d123.3234!3d8.1526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1710000000000!5m2!1sen!2sph"
+                width="100%" height="300" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+          <p class="muted" style="margin-top:10px;">*Map centered on DSHS vicinity and adjacent creek systems.</p>
+        </section>
+
+        <section id="panel-urgent" class="panel">
+          <h3>Emergency Hotlines</h3>
+          <ul class="checklist">
+            <li><strong>MDRRMO Dumingag:</strong>
+                <button class="hotline-link copy-phone-btn" type="button" data-phone="09098046609" data-label="MDRRMO Dumingag">0909 804 6609</button></li>
+            <li><strong>RHU Dumingag:</strong>
+                <button class="hotline-link copy-phone-btn" type="button" data-phone="09511640381" data-label="RHU Dumingag">0951 164 0381</button></li>
+            <li><strong>BDRRMC Lower Landing:</strong>
+                <button class="hotline-link copy-phone-btn" type="button" data-phone="09093325995" data-label="BDRRMC Lower Landing">0909 332 5995</button></li>
+            <li><strong>General Emergency:</strong> 112 / 911</li>
+          </ul>
+        </section>
+      </div>
+    </nav>
+
+    <section class="kit expert-box">
+        <h3>Verified by DRRM Experts</h3>
+        <ul class="expert-list">
+          <li>
+            <strong>Mr. Junax Cardoza</strong>
+            <span>MDRRMO-Dumingag Officer-In-Charge</span>
+          </li>
+          <li>
+            <strong>PSSG Armajay N. Barral</strong>
+            <span>PNP Rescue Assigned Personnel</span>
+          </li>
+        </ul>
+    </section>
+
+    <section class="footer">
+      <div>
+        <p class="muted">This application is a dedicated safety tool for Dumingag residents. Always follow the instructions of local authorities.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <img class="modal-content" id="img01">
+    <button id="back-to-map" class="btn ghost">Back to Map</button>
+  </div>
+
+  <script type="module" src="script.js"></script>
+
+</body>
+</html>

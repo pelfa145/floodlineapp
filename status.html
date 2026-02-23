@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#036666" />
+  <title>Dumingag Flood Safety — Live Status</title>
+    <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="app" role="main">
+    <header class="header">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2L4 7v7c0 5 3.5 9 8 10 4.5-1 8-5 8-10V7l-8-5z"/></svg>
+        <div>
+          <h1>Live Status</h1>
+          <p class="muted">Dumingag Flood Monitoring</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Status Display -->
+    <section id="live-status-card" class="status-card status-safe">
+      <div class="gauge-wrapper">
+        <svg id="gauge" class="gauge" viewBox="0 0 120 120">
+          <circle class="gauge-track" cx="60" cy="60" r="54" stroke-width="12" />
+          <circle id="gauge-fill" class="gauge-fill" cx="60" cy="60" r="54" stroke-width="12" transform="rotate(-90 60 60)" />
+        </svg>
+        <div class="status-content">
+          <div class="status-header">
+            <span class="pulse-dot"></span>
+            <span class="status-label">LIVE SYSTEM STATUS</span>
+          </div>
+          <h2 id="level-text">Level 0</h2>
+          <p id="level-desc">No Flooding Detected</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional Live Data -->
+    <section class="panel">
+      <h3>Details</h3>
+      <ul class="checklist">
+        <li><strong>Last Update:</strong> <span id="last-updated">--:--</span></li>
+        <li><strong>Trend:</strong> <span id="water-trend">--</span></li>
+      </ul>
+
+      <h3>Recent History</h3>
+      <button id="clear-history" class="btn ghost" style="margin-bottom: 1rem;">Clear History</button>
+      <ul id="status-log"></ul>
+
+    </section>
+
+    <div class="footer-actions">
+        <a class="btn ghost" href="index.html">View Full Safety Guide</a>
+    </div>
+
+  </main>
+  <audio id="level1-alert" src="level1alert.mp3" preload="auto"></audio>
+  <audio id="level2-alert" src="level2alert.mp3" preload="auto"></audio>
+  <audio id="level3-alert" src="level3alert.mp3" preload="auto"></audio>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
