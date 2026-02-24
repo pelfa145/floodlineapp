@@ -93,7 +93,38 @@ document.addEventListener("DOMContentLoaded", () => {
             if(pulseDot) pulseDot.style.display = 'none';
             if(lastUpdated) lastUpdated.innerText = "--:--";
             if(waterTrend) waterTrend.innerText = "--";
+            const rainfallStatus = document.getElementById('rainfall-status');
+            if(rainfallStatus) rainfallStatus.innerText = "---";
             setGaugeProgress(0);
+        }
+
+        // --- Rainfall Logic (OpenWeather) ---
+        async function updateRainfall() {
+            const rainfallStatus = document.getElementById('rainfall-status');
+            const apiKey = "9209d11b074454d588833b6af0281a44";
+            const lat = 8.155;
+            const lon = 123.345;
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Weather data unavailable');
+                const data = await response.json();
+                
+                let rainText = "No rain";
+                if (data.rain && data.rain['1h']) {
+                    rainText = `${data.rain['1h']} mm/h`;
+                } else if (data.weather && data.weather[0]) {
+                    rainText = data.weather[0].main; // e.g., "Clear", "Clouds"
+                }
+
+                if (rainfallStatus) {
+                    rainfallStatus.innerText = rainText;
+                }
+            } catch (error) {
+                console.error("Rainfall Fetch Error:", error);
+                if (rainfallStatus) rainfallStatus.innerText = "Unavailable";
+            }
         }
 
         // --- Gauge Logic ---
@@ -120,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setOfflineState();
         updateLogUI();
+        updateRainfall();
+        setInterval(updateRainfall, 600000); // Update every 10 minutes
 
         // --- Audio Unlock Logic ---
         function getAlertAudio(level) {
