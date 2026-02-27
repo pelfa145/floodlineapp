@@ -20,15 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
                        || window.innerWidth < 768;
 
-        // Update hotline buttons for mobile devices
+        // Update UI for mobile devices
         if (isMobile) {
-            document.querySelectorAll('.copy-phone-btn, .hotline-link').forEach(btn => {
-                const phoneNumber = btn.dataset.phone;
-                if (phoneNumber && !btn.hasAttribute('href')) {
-                    btn.style.textDecoration = 'underline';
-                    btn.title = 'Tap to call directly';
+            // Change button text for hotline buttons
+            document.querySelectorAll('.copy-phone-btn').forEach(btn => {
+                const label = btn.dataset.label;
+                if (label) {
+                    // Remove "Copy" prefix and use just the label
+                    btn.innerHTML = label;
+                    btn.title = 'Tap to call';
                 }
             });
+
+            // Hide the "Copy MDRRMO #" button in the hero section
+            const heroCopyBtn = document.querySelector('.hero .copy-phone-btn');
+            if (heroCopyBtn) {
+                heroCopyBtn.style.display = 'none';
+            }
         }
         const firebaseConfig = {
             apiKey: "AIzaSyCc4VecYAifaF9XyQizHRNdXfC3bLdBCl8",
@@ -244,9 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // --- Hotline Button Logic ---
         copyPhoneButtons.forEach((button) => {
-            button.addEventListener('click', async () => {
+            button.addEventListener('click', async (e) => {
                 const phoneNumber = button.dataset.phone;
-                const label = button.dataset.label || 'Hotline';
                 if (!phoneNumber) return;
 
                 if (isMobile) {
@@ -254,8 +261,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href = `tel:${phoneNumber}`;
                 } else {
                     // On desktop: copy to clipboard
+                    e.preventDefault();
                     try {
                         await copyPhoneNumber(phoneNumber);
+                        const label = button.dataset.label || 'Hotline';
                         alert(`${label} copied: ${phoneNumber}`);
                     } catch (error) {
                         console.error('Failed to copy hotline number:', error);

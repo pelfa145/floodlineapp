@@ -1,21 +1,28 @@
 {
   "name": "Flood Safety Dumingag",
   "short_name": "Flood Safety",
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f4fbfb",
   "theme_color": "#036666",
   "description": "Live flood alerts and safety guidance for Dumingag.",
+  "categories": ["utilities", "safety"],
+  "orientation": "any",
+  "dir": "ltr",
+  "lang": "en-US",
   "icons": [
     {
       "src": "icon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
