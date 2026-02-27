@@ -3,6 +3,18 @@ import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10
 
 document.addEventListener("DOMContentLoaded", () => {
     try {
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
         const firebaseConfig = {
             apiKey: "AIzaSyCc4VecYAifaF9XyQizHRNdXfC3bLdBCl8",
             authDomain: "floodline-capstone.firebaseapp.com",
