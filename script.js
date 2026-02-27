@@ -15,6 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
             });
         }
+
+        // --- Device Detection ---
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                       || window.innerWidth < 768;
+
+        // Update hotline buttons for mobile devices
+        if (isMobile) {
+            document.querySelectorAll('.copy-phone-btn, .hotline-link').forEach(btn => {
+                const phoneNumber = btn.dataset.phone;
+                if (phoneNumber && !btn.hasAttribute('href')) {
+                    btn.style.textDecoration = 'underline';
+                    btn.title = 'Tap to call directly';
+                }
+            });
+        }
         const firebaseConfig = {
             apiKey: "AIzaSyCc4VecYAifaF9XyQizHRNdXfC3bLdBCl8",
             authDomain: "floodline-capstone.firebaseapp.com",
@@ -227,7 +242,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setupAudioUnlock();
 
-        // --- Hotline Copy Logic ---
+        // --- Hotline Button Logic ---
+        copyPhoneButtons.forEach((button) => {
+            button.addEventListener('click', async () => {
+                const phoneNumber = button.dataset.phone;
+                const label = button.dataset.label || 'Hotline';
+                if (!phoneNumber) return;
+
+                if (isMobile) {
+                    // On mobile: initiate direct phone call
+                    window.location.href = `tel:${phoneNumber}`;
+                } else {
+                    // On desktop: copy to clipboard
+                    try {
+                        await copyPhoneNumber(phoneNumber);
+                        alert(`${label} copied: ${phoneNumber}`);
+                    } catch (error) {
+                        console.error('Failed to copy hotline number:', error);
+                        alert('Unable to copy number. Please copy it manually.');
+                    }
+                }
+            });
+        });
+
+        // --- Phone Number Copy Function (for desktop fallback) ---
         async function copyPhoneNumber(phoneNumber) {
             if (navigator.clipboard && window.isSecureContext) {
                 await navigator.clipboard.writeText(phoneNumber);
@@ -243,21 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.execCommand('copy');
             document.body.removeChild(textArea);
         }
-
-        copyPhoneButtons.forEach((button) => {
-            button.addEventListener('click', async () => {
-                const phoneNumber = button.dataset.phone;
-                const label = button.dataset.label || 'Hotline';
-                if (!phoneNumber) return;
-                try {
-                    await copyPhoneNumber(phoneNumber);
-                    alert(`${label} copied: ${phoneNumber}`);
-                } catch (error) {
-                    console.error('Failed to copy hotline number:', error);
-                    alert('Unable to copy number. Please copy it manually.');
-                }
-            });
-        });
 
         // --- Share Button Logic ---
         if (shareBtn) {
