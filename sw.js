@@ -33,6 +33,40 @@ self.addEventListener('activate', event => {
   clients.claim();
 });
 
+self.addEventListener('sync', event => {
+  if (event.tag === 'flood-sync') {
+    event.waitUntil(
+      fetch('https://floodline-capstone-default-rtdb.asia-southeast1.firebasedatabase.app/flood_status.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Network response not ok: ' + response.status);
+          return response.json();
+        })
+        .then(data => {
+          if (data && data.current_level >= 1) {
+            const level = data.current_level;
+            const descriptions = {
+              1: 'Water is rising',
+              2: 'EVACUATE WHILE YOU STILL CAN',
+              3: 'EXTREME DANGER: SEEK HIGHER GROUND IMMEDIATELY'
+            };
+            const body = descriptions[level] || 'Flood alert';
+            self.registration.showNotification('Flood Alert: Level ' + level, {
+              body: body,
+              icon: '/icon.png',
+              vibrate: [200, 100, 200],
+              tag: 'flood-alert-level-' + level,
+              requireInteraction: true,
+              urgency: 'high'
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Background sync fetch failed:', error);
+        })
+    );
+  }
+});
+
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)

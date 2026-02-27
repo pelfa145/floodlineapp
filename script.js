@@ -37,6 +37,20 @@ document.addEventListener("DOMContentLoaded", () => {
             if (heroCopyBtn) {
                 heroCopyBtn.style.display = 'none';
             }
+
+            // Register background sync for periodic flood checks
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.ready
+                        .then(registration => {
+                            if (registration.sync) {
+                                // Register periodic sync (every ~6 hours when app is in background)
+                                registration.sync.register('flood-sync')
+                                    .catch(err => console.log('Background sync registration failed:', err));
+                            }
+                        });
+                });
+            }
         }
         const firebaseConfig = {
             apiKey: "AIzaSyCc4VecYAifaF9XyQizHRNdXfC3bLdBCl8",
