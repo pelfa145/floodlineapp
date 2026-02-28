@@ -10,8 +10,11 @@
     <meta name="apple-mobile-web-app-title" content="Flood Safety">
     <title>Dumingag Flood Safety — Local Guide</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
 <body>
@@ -123,9 +126,13 @@
           <div class="map-container" style="margin-bottom: 1rem;">
             <img id="zoomable-map" src="floodpronemap.png" alt="Flood Prone Map" style="width: 100%; border-radius: 12px;">
           </div>
-          <p class="muted" style="margin-top:10px;">
-            Key flood-prone areas near Dumingag National High School (DSHS) and adjacent waterways (see map above). Detailed offline navigation is not available; when online, use your device's maps app for turn-by-turn directions.
-          </p>
+          <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3950.55!2d123.3234!3d8.1526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1710000000000!5m2!1sen!2sph"
+                width="100%" height="300" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+          <p class="muted" style="margin-top:10px;">*Map centered on DSHS vicinity and adjacent creek systems.</p>
         </section>
 
         <section id="panel-urgent" class="panel">
