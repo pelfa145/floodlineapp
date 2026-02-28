@@ -22,17 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update UI for mobile devices
         if (isMobile) {
-            // Change button text for hotline buttons - preserve icon
+            // Change button text for hotline buttons
             document.querySelectorAll('.copy-phone-btn').forEach(btn => {
                 const label = btn.dataset.label;
-                if (label && !btn.querySelector('svg')) {
-                    // Only change text if there's no icon (regular buttons)
-                    btn.innerHTML = label;
-                    btn.title = 'Tap to call';
-                }
-                // For buttons with icons (like phone icon), the label already shows properly
-                // Just update the call-to-action hint
                 if (label) {
+                    // Remove "Copy" prefix and use just the label
+                    btn.innerHTML = label;
                     btn.title = 'Tap to call';
                 }
             });
