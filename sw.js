@@ -1,17 +1,13 @@
-const CACHE_NAME = 'flood-safety-v2';
+const CACHE_NAME = 'flood-safety-v1';
 const urlsToCache = [
   '/',
   '/index.html',
   '/status.html',
-  '/offline.html',
   '/styles.css',
   '/script.js',
   '/floodpronemap.png',
   '/icon.png',
-  '/manifest.json',
-  '/level1alert.mp3',
-  '/level2alert.mp3',
-  '/level3alert.mp3'
+  '/manifest.json'
 ];
 
 self.addEventListener('install', event => {
@@ -72,44 +68,8 @@ self.addEventListener('sync', event => {
 });
 
 self.addEventListener('fetch', event => {
-  const url = event.request.url;
-
-  // Skip service worker for external API calls (Firebase, OpenWeather, etc.)
-  if (url.includes('firebase') || 
-      url.includes('firebasedatabase') || 
-      url.includes('openweathermap') ||
-      url.includes('googleapis') ||
-      url.includes('gstatic.com/firebase')) {
-    event.respondWith(fetch(event.request));
-    return;
-  }
-
-  // For navigation requests, try network first, then cache, then offline page
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .catch(() => {
-          return caches.match(event.request)
-            .then(response => response || caches.match('/offline.html'));
-        })
-    );
-    return;
-  }
-
-  // For other requests, use cache first with network fallback
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).catch(() => {
-          // For non-navigation requests that fail, return a generic placeholder or nothing
-          if (event.request.destination === 'image') {
-            return caches.match('/icon.png'); // fallback image
-          }
-          return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
-        });
-      })
+      .then(response => response || fetch(event.request))
   );
 });

@@ -1,7 +1,7 @@
 {
   "name": "Flood Safety Dumingag",
   "short_name": "Flood Safety",
-  "start_url": "/?source=pwa",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f4fbfb",
@@ -11,7 +11,6 @@
   "orientation": "any",
   "dir": "ltr",
   "lang": "en-US",
-  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon.png",
