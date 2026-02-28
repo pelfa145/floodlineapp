@@ -72,6 +72,18 @@ self.addEventListener('sync', event => {
 });
 
 self.addEventListener('fetch', event => {
+  const url = event.request.url;
+
+  // Skip service worker for external API calls (Firebase, OpenWeather, etc.)
+  if (url.includes('firebase') || 
+      url.includes('firebasedatabase') || 
+      url.includes('openweathermap') ||
+      url.includes('googleapis') ||
+      url.includes('gstatic.com/firebase')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   // For navigation requests, try network first, then cache, then offline page
   if (event.request.mode === 'navigate') {
     event.respondWith(
