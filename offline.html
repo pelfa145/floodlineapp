@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#036666" />
+    <title>Offline — Flood Safety</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app" role="main">
+      <section class="hero" style="grid-area: hero;">
+        <div class="hero-inner" style="text-align: center;">
+          <svg class="logo" viewBox="0 0 24 24" aria-hidden="true" style="width:64px;height:64px;margin:0 auto 16px;padding:12px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;box-shadow:0 4px 12px rgba(3,102,102,0.2);"><path fill="currentColor" d="M12 2L4 7v7c0 5 3.5 9 8 10 4.5-1 8-5 8-10V7l-8-5z"/></svg>
+          <h2>You're Offline</h2>
+          <p class="muted">The Flood Safety app works offline for emergencies. Please check your internet connection and try again.</p>
+        </div>
+        <div class="quick-actions" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <a class="btn" href="index.html">Open App</a>
+          <button class="btn ghost" onclick="window.location.reload()">Retry</button>
+        </div>
+      </section>
+
+      <section class="panel" style="grid-area: panels;">
+        <h3>Offline Features Still Available</h3>
+        <ul class="checklist">
+          <li>View safety protocols and preparedness checklists</li>
+          <li>See last known flood status (when reconnected)</li>
+          <li>Copy or dial emergency hotlines</li>
+          <li>Review flood zone reference map</li>
+        </ul>
+        <h3>Network Required For</h3>
+        <ul class="checklist">
+          <li>Live flood level updates from the monitoring system</li>
+          <li>Current rainfall data</li>
+          <li>Background sync of alerts</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
