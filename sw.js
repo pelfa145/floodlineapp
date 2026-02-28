@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flood-safety-v1';
+const CACHE_NAME = 'flood-safety-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -7,7 +7,10 @@ const urlsToCache = [
   '/script.js',
   '/floodpronemap.png',
   '/icon.png',
-  '/manifest.json'
+  '/manifest.json',
+  '/level1alert.mp3',
+  '/level2alert.mp3',
+  '/level3alert.mp3'
 ];
 
 self.addEventListener('install', event => {
@@ -68,6 +71,38 @@ self.addEventListener('sync', event => {
 });
 
 self.addEventListener('fetch', event => {
+  const url = event.request.url;
+
+  // Bypass external APIs - let them fail gracefully when offline
+  if (url.includes('firebase') || 
+      url.includes('firebasedatabase') || 
+      url.includes('openweathermap') ||
+      url.includes('googleapis') ||
+      url.includes('gstatic.com/firebase')) {
+    event.respondWith(fetch(event.request).catch(() => new Response(JSON.stringify({error: 'offline'}), {
+      headers: { 'Content-Type': 'application/json' }
+    })));
+    return;
+  }
+
+  // For navigation requests, try network first (to get live data), fallback to cache
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Cache the successful navigation for offline use
+          if (response.ok) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // For assets: cache-first (fastest)
   event.respondWith(
     caches.match(event.request)
       .then(response => response || fetch(event.request))
