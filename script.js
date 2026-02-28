@@ -22,12 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update UI for mobile devices
         if (isMobile) {
-            // Change button text for hotline buttons
+            // Change button text for hotline buttons - preserve icon
             document.querySelectorAll('.copy-phone-btn').forEach(btn => {
                 const label = btn.dataset.label;
-                if (label) {
-                    // Remove "Copy" prefix and use just the label
+                if (label && !btn.querySelector('svg')) {
+                    // Only change text if there's no icon (regular buttons)
                     btn.innerHTML = label;
+                    btn.title = 'Tap to call';
+                }
+                // For buttons with icons (like phone icon), the label already shows properly
+                // Just update the call-to-action hint
+                if (label) {
                     btn.title = 'Tap to call';
                 }
             });
@@ -144,66 +149,106 @@ document.addEventListener("DOMContentLoaded", () => {
             if(waterTrend) waterTrend.innerText = "--";
             const rainfallStatus = document.getElementById('rainfall-status');
             if(rainfallStatus) rainfallStatus.innerText = "---";
-            setGaugeProgress(0);
-        }
+        setGaugeProgress(0);
+      }
+    }
 
-        // --- Rainfall Logic (OpenWeather) ---
-        async function updateRainfall() {
-            const rainfallStatus = document.getElementById('rainfall-status');
-            const apiKey = "9209d11b074454d588833b6af0281a44";
-            const lat = 8.155;
-            const lon = 123.345;
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    // --- Offline Tracking ---
+    let offlineBadge = null;
 
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Weather data unavailable');
-                const data = await response.json();
-                
-                let rainText = "No rain";
-                if (data.rain && data.rain['1h']) {
-                    rainText = `${data.rain['1h']} mm/h`;
-                } else if (data.weather && data.weather[0]) {
-                    rainText = data.weather[0].main; // e.g., "Clear", "Clouds"
-                }
+    function createOfflineBadge() {
+      if (offlineBadge) return offlineBadge;
+      offlineBadge = document.createElement('div');
+      offlineBadge.id = 'offline-badge';
+      Object.assign(offlineBadge.style, {
+        position: 'absolute',
+        top: '8px',
+        right: '8px',
+        background: '#ef4444',
+        color: 'white',
+        padding: '2px 8px',
+        borderRadius: '4px',
+        fontSize: '12px',
+        fontWeight: '700',
+        display: 'none',
+        zIndex: '5'
+      });
+      offlineBadge.textContent = 'OFFLINE';
+      if (statusCard) {
+        statusCard.appendChild(offlineBadge);
+      }
+      return offlineBadge;
+    }
 
-                if (rainfallStatus) {
-                    rainfallStatus.innerText = rainText;
-                }
-            } catch (error) {
-                console.error("Rainfall Fetch Error:", error);
-                if (rainfallStatus) rainfallStatus.innerText = "Unavailable";
+    function updateOfflineStatus(isOffline) {
+      const badge = createOfflineBadge();
+      if (badge) badge.style.display = isOffline ? 'block' : 'none';
+
+      const rainfallStatus = document.getElementById('rainfall-status');
+      if (rainfallStatus) {
+        rainfallStatus.innerText = isOffline ? 'Unavailable' : 'Fetching...';
+      }
+
+      if (pulseDot) {
+        pulseDot.style.opacity = isOffline ? '0.3' : '1';
+      }
+    }
+
+    // --- Cached Status for Offline ---
+    function loadCachedStatus() {
+      try {
+        const cached = localStorage.getItem('cachedFloodStatus');
+        if (cached) {
+          const { current_level: level, timestamp } = JSON.parse(cached);
+          if (level !== undefined) {
+            setGaugeProgress(level);
+            // Update status text based on cached level
+            if (level == 0) {
+              statusCard.className = 'status-card status-safe';
+              levelText.innerText = "Level 0";
+              levelDesc.innerText = "No Flooding Detected (Cached)";
+            } else if (level == 1) {
+              statusCard.className = 'status-card status-warning';
+              levelText.innerText = "Level 1";
+              levelDesc.innerText = "Water is rising (Cached)";
+            } else if (level == 2) {
+              statusCard.className = 'status-card status-critical';
+              levelText.innerText = "Level 2";
+              levelDesc.innerText = "EVACUATE WHILE YOU STILL CAN (Cached)";
+            } else if (level >= 3) {
+              statusCard.className = 'status-card status-emergency';
+              levelText.innerText = "Level 3";
+              levelDesc.innerText = "EXTREME DANGER: SEEK HIGHER GROUND IMMEDIATELY (Cached)";
             }
+            if (lastUpdated) {
+              const cachedTime = new Date(timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+              lastUpdated.innerText = `Cached: ${cachedTime}`;
+            }
+            return true;
+          }
         }
+      } catch (e) {}
+      return false;
+    }
 
-        // --- Gauge Logic ---
-        function initGauge() {
-            if (gaugeInitialized || !gaugeFill) return;
-            try {
-                gaugeRadius = gaugeFill.r.baseVal.value;
-                gaugeCircumference = 2 * Math.PI * gaugeRadius;
-                if (gaugeCircumference > 0) {
-                    gaugeFill.style.strokeDasharray = `${gaugeCircumference} ${gaugeCircumference}`;
-                    gaugeFill.style.strokeDashoffset = gaugeCircumference;
-                    gaugeInitialized = true;
-                }
-            } catch (e) { console.error("Could not initialize gauge:", e); }
+    function setOfflineState() {
+      if (!loadCachedStatus()) {
+        if (statusCard) {
+          statusCard.className = 'status-card status-offline';
+          levelText.innerText = "Offline";
+          levelDesc.innerText = "Waiting for connection...";
         }
+        if(pulseDot) pulseDot.style.display = 'none';
+        if(lastUpdated) lastUpdated.innerText = "--:--";
+        if(waterTrend) waterTrend.innerText = "--";
+        const rainfallStatus = document.getElementById('rainfall-status');
+        if(rainfallStatus) rainfallStatus.innerText = "---";
+        setGaugeProgress(0);
+      }
+      if(offlineBadge) offlineBadge.style.display = 'block';
+    }
 
-        function setGaugeProgress(level) {
-            if (!gaugeInitialized) initGauge();
-            if (!gaugeInitialized) return;
-            const safeLevel = Math.min(Math.max(level, 0), 3);
-            const offset = gaugeCircumference - (safeLevel / 3) * gaugeCircumference;
-            gaugeFill.style.strokeDashoffset = offset;
-        }
-
-        setOfflineState();
-        updateLogUI();
-        updateRainfall();
-        setInterval(updateRainfall, 600000); // Update every 10 minutes
-
-        // --- Audio Unlock Logic ---
+    // --- Audio Unlock Logic ---
         function getAlertAudio(level) {
             return alertAudioByLevel[Math.min(Math.max(level, 1), 3)] || null;
         }
@@ -354,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const floodStatusRef = ref(db, 'flood_status');
         onValue(floodStatusRef, (snapshot) => {
             if (!snapshot.exists()) {
-                setOfflineState();
+                console.warn('Firebase snapshot does not exist at flood_status path');
                 return;
             }
 
@@ -402,7 +447,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else { waterTrend.innerText = "Stable"; }
             }
 
-            const isInitialSnapshot = previousLevel === null;
+        const isInitialSnapshot = previousLevel === null;
             if (!isInitialSnapshot && previousLevel !== level) {
                 addLogEntry(level, levelDescription, timestamp);
                 if (level === 0) stopAllAlerts();
@@ -419,9 +464,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             previousLevel = level;
 
+            // Cache latest status for offline viewing
+            try {
+                localStorage.setItem('cachedFloodStatus', JSON.stringify({
+                    current_level: level,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {}
+
         }, (error) => {
             console.error("Firebase Error:", error);
-            setOfflineState();
+            // Keep existing data; network status handled separately.
         });
 
     } catch (e) {
