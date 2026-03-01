@@ -1,16 +1,16 @@
 const CACHE_NAME = 'flood-safety-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/status.html',
-  '/styles.css',
-  '/script.js',
-  '/floodpronemap.png',
-  '/icon.png',
-  '/manifest.json',
-  '/level1alert.mp3',
-  '/level2alert.mp3',
-  '/level3alert.mp3'
+  './',
+  './index.html',
+  './status.html',
+  './styles.css',
+  './script.js',
+  './floodpronemap.png',
+  './icon.png',
+  './manifest.json',
+  './level1alert.mp3',
+  './level2alert.mp3',
+  './level3alert.mp3'
 ];
 
 self.addEventListener('install', event => {
@@ -55,7 +55,7 @@ self.addEventListener('sync', event => {
             const body = descriptions[level] || 'Flood alert';
             self.registration.showNotification('Flood Alert: Level ' + level, {
               body: body,
-              icon: '/icon.png',
+              icon: './icon.png',
               vibrate: [200, 100, 200],
               tag: 'flood-alert-level-' + level,
               requireInteraction: true,
