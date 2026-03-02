@@ -273,132 +273,58 @@ body::after{
 .footer{display:flex;flex-direction:column;gap:12px;padding:12px}
 .footer-actions{display:flex;gap:10px}
 
-/* --- MODERN IMMERSIVE STATUS CARD --- */
 .status-card {
-  padding: 32px 20px;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 0 0 28px 28px; /* Rounded bottom for sticky top */
+  padding: 20px;
+  transition: all 0.5s ease;
+  border-radius: 16px;
   color: white;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
   text-align: center;
   position: sticky;
   top: 0;
-  z-index: 100;
-  margin: -18px -18px 24px -18px; /* Bleed to edges */
-  border: none;
-  background: var(--accent);
-  overflow: hidden;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.3);
 }
-
-/* Dynamic Gradients for Statuses */
-.status-safe { 
-  background: linear-gradient(135deg, #036666 0%, #004d4d 100%); 
-}
-.status-warning { 
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%); 
-  color: #1a1a1a; 
-}
-.status-critical { 
-  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); 
-}
-.status-emergency { 
-  background: linear-gradient(135deg, #d90429 0%, #9e031b 100%); 
-  animation: flash-bg 2s infinite; 
-}
-
-@keyframes flash-bg {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.1); }
-}
-
 .gauge-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  position: relative;
-}
-
-.gauge {
-  width: 140px; /* Larger gauge for mobile */
-  height: 140px;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
-}
-
-.status-content {
-  margin-top: -10px;
-}
-
-.status-content h2 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 0;
-  letter-spacing: -1px;
-}
-
-.status-content p {
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.9;
-  margin: 4px 0 0;
-}
-
-.status-header {
-  margin-bottom: 12px;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 6px 12px;
-  border-radius: 20px;
-  backdrop-filter: blur(4px);
-  display: inline-flex;
-}
-
-.status-warning .status-header {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.status-warning .pulse-dot {
-  background-color: var(--accent);
-}
-
-/* Metrics Grid Adjustments for Mobile */
-.metrics-grid {
   gap: 16px;
 }
-
-.metric-card {
-  padding: 16px;
-  background: white;
-  border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-  border-radius: 18px;
+.gauge{
+ width:80px;
+ height:80px;
+ flex-shrink: 0;
+}
+.status-content{
+ text-align: center;
 }
 
-/* Responsive Desktop Adjustments */
-@media (min-width: 768px) {
-  .status-card {
-    border-radius: 28px;
-    margin: 0;
-    padding: 40px;
-    position: relative;
-    top: auto;
-  }
-  
-  .gauge {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .status-content h2 {
-    font-size: 3.5rem;
-  }
+.gauge-track {
+  fill: none;
+  stroke: rgba(255,255,255,0.2);
 }
 
-/* Existing Logic Fixes */
-.status-warning .gauge-fill { stroke: var(--accent); }
-.status-warning .gauge-track { stroke: rgba(0,0,0,0.05); }
-
-/* --- END MODERN IMMERSIVE STATUS CARD --- */
+.gauge-fill {
+  fill: none;
+  stroke: white;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s ease;
+}
+.status-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
 .pulse-dot {
   width: 8px;
   height: 8px;
