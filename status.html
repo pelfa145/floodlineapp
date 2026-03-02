@@ -33,15 +33,17 @@
     <!-- Main Status Display -->
     <section id="live-status-card" class="status-card status-safe">
       <div class="gauge-wrapper">
+        <div class="status-header">
+          <span class="pulse-dot"></span>
+          <span class="status-label">Live System Status</span>
+        </div>
+        
         <svg id="gauge" class="gauge" viewBox="0 0 120 120">
-          <circle class="gauge-track" cx="60" cy="60" r="54" stroke-width="12" />
-          <circle id="gauge-fill" class="gauge-fill" cx="60" cy="60" r="54" stroke-width="12" transform="rotate(-90 60 60)" />
+          <circle class="gauge-track" cx="60" cy="60" r="54" stroke-width="8" fill="none" opacity="0.2" />
+          <circle id="gauge-fill" class="gauge-fill" cx="60" cy="60" r="54" stroke-width="8" fill="none" transform="rotate(-90 60 60)" stroke-dasharray="339.292" stroke-dashoffset="339.292" stroke-linecap="round" />
         </svg>
+
         <div class="status-content">
-          <div class="status-header">
-            <span class="pulse-dot"></span>
-            <span class="status-label">LIVE SYSTEM STATUS</span>
-          </div>
           <h2 id="level-text">Level 0</h2>
           <p id="level-desc">No Flooding Detected</p>
         </div>
@@ -56,23 +58,23 @@
       </div>
       
       <div class="metrics-grid">
+        <div class="metric-card weather-main">
+          <div class="metric-icon" id="weather-icon-container">
+            <img id="weather-icon" src="" alt="" style="display:none; width: 44px; height: 44px;">
+            <span id="weather-emoji" style="font-size: 1.5rem;">☁️</span>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Local Rainfall</span>
+            <span id="rainfall-status" class="metric-value">Fetching...</span>
+            <span id="rain-intensity" class="metric-sub">Checking OpenWeather...</span>
+          </div>
+        </div>
+
         <div class="metric-card">
           <div class="metric-icon">🌊</div>
           <div class="metric-info">
             <span class="metric-label">Water Trend</span>
             <span id="water-trend" class="metric-value">--</span>
-          </div>
-        </div>
-        
-        <div class="metric-card weather-main">
-          <div class="metric-icon" id="weather-icon-container">
-            <img id="weather-icon" src="" alt="" style="display:none; width: 40px; height: 40px;">
-            <span id="weather-emoji">☁️</span>
-          </div>
-          <div class="metric-info">
-            <span class="metric-label">Rainfall</span>
-            <span id="rainfall-status" class="metric-value">Fetching...</span>
-            <span id="rain-intensity" class="metric-sub">---</span>
           </div>
         </div>
 
@@ -96,11 +98,12 @@
       <div class="history-section">
         <div class="panel-header">
           <h3>Recent History</h3>
-          <button id="clear-history" class="btn ghost sm">Clear</button>
+          <button id="clear-history" class="btn ghost sm">Clear Log</button>
         </div>
-        <ul id="status-log"></ul>
+        <ul id="status-log">
+          <li class="muted" style="border:none; background:none;">No recent activity logged.</li>
+        </ul>
       </div>
-
     </section>
 
     <div class="footer-actions">
