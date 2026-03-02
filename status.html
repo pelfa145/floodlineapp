@@ -50,16 +50,56 @@
 
     <!-- Additional Live Data -->
     <section class="panel">
-      <h3>Details</h3>
-      <ul class="checklist">
-        <li><strong>Last Update:</strong> <span id="last-updated">--:--</span></li>
-        <li><strong>Trend:</strong> <span id="water-trend">--</span></li>
-        <li><strong>Rainfall:</strong> <span id="rainfall-status">Fetching...</span></li>
-      </ul>
+      <div class="panel-header">
+        <h3>Live Metrics</h3>
+        <span id="last-updated-chip" class="chip">Updated --:--</span>
+      </div>
+      
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon">🌊</div>
+          <div class="metric-info">
+            <span class="metric-label">Water Trend</span>
+            <span id="water-trend" class="metric-value">--</span>
+          </div>
+        </div>
+        
+        <div class="metric-card weather-main">
+          <div class="metric-icon" id="weather-icon-container">
+            <img id="weather-icon" src="" alt="" style="display:none; width: 40px; height: 40px;">
+            <span id="weather-emoji">☁️</span>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Rainfall</span>
+            <span id="rainfall-status" class="metric-value">Fetching...</span>
+            <span id="rain-intensity" class="metric-sub">---</span>
+          </div>
+        </div>
 
-      <h3>Recent History</h3>
-      <button id="clear-history" class="btn ghost" style="margin-bottom: 1rem;">Clear History</button>
-      <ul id="status-log"></ul>
+        <div class="metric-card">
+          <div class="metric-icon">💧</div>
+          <div class="metric-info">
+            <span class="metric-label">Humidity</span>
+            <span id="humidity-status" class="metric-value">--%</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">💨</div>
+          <div class="metric-info">
+            <span class="metric-label">Wind Speed</span>
+            <span id="wind-status" class="metric-value">-- km/h</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-section">
+        <div class="panel-header">
+          <h3>Recent History</h3>
+          <button id="clear-history" class="btn ghost sm">Clear</button>
+        </div>
+        <ul id="status-log"></ul>
+      </div>
 
     </section>
 

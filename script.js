@@ -70,8 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const levelText = document.getElementById('level-text');
         const levelDesc = document.getElementById('level-desc');
         const gaugeFill = document.getElementById('gauge-fill');
-        const lastUpdated = document.getElementById('last-updated');
+        const lastUpdatedChip = document.getElementById('last-updated-chip');
         const waterTrend = document.getElementById('water-trend');
+        const rainfallStatus = document.getElementById('rainfall-status');
+        const humidityStatus = document.getElementById('humidity-status');
+        const windStatus = document.getElementById('wind-status');
+        const rainIntensity = document.getElementById('rain-intensity');
+        const weatherIcon = document.getElementById('weather-icon');
+        const weatherEmoji = document.getElementById('weather-emoji');
         const pulseDot = document.querySelector('.pulse-dot');
         const shareBtn = document.getElementById('shareBtn');
         const statusLog = document.getElementById('status-log');
@@ -140,16 +146,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 levelDesc.innerText = "Waiting for connection...";
             }
             if(pulseDot) pulseDot.style.display = 'none';
-            if(lastUpdated) lastUpdated.innerText = "--:--";
+            if(lastUpdatedChip) lastUpdatedChip.innerText = "Updated --:--";
             if(waterTrend) waterTrend.innerText = "--";
-            const rainfallStatus = document.getElementById('rainfall-status');
             if(rainfallStatus) rainfallStatus.innerText = "---";
             setGaugeProgress(0);
         }
 
         // --- Rainfall Logic (OpenWeather) ---
         async function updateRainfall() {
-            const rainfallStatus = document.getElementById('rainfall-status');
             const apiKey = "9209d11b074454d588833b6af0281a44";
             const lat = 8.155;
             const lon = 123.345;
@@ -160,16 +164,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!response.ok) throw new Error('Weather data unavailable');
                 const data = await response.json();
                 
-                let rainText = "No rain";
+                // Rainfall status
+                let rainVal = 0;
+                let rainTxt = "No rain";
                 if (data.rain && data.rain['1h']) {
-                    rainText = `${data.rain['1h']} mm/h`;
+                    rainVal = data.rain['1h'];
+                    rainTxt = `${rainVal} mm/h`;
                 } else if (data.weather && data.weather[0]) {
-                    rainText = data.weather[0].main; // e.g., "Clear", "Clouds"
+                    rainTxt = data.weather[0].main;
+                }
+                if (rainfallStatus) rainfallStatus.innerText = rainTxt;
+
+                // Rain intensity description
+                if (rainIntensity) {
+                    if (rainVal === 0 && data.weather[0]) rainIntensity.innerText = data.weather[0].description;
+                    else if (rainVal > 0 && rainVal < 2.5) rainIntensity.innerText = "Light rain";
+                    else if (rainVal >= 2.5 && rainVal < 7.6) rainIntensity.innerText = "Moderate rain";
+                    else if (rainVal >= 7.6 && rainVal < 50) rainIntensity.innerText = "Heavy rain";
+                    else if (rainVal >= 50) rainIntensity.innerText = "Extreme rain";
                 }
 
-                if (rainfallStatus) {
-                    rainfallStatus.innerText = rainText;
+                // Humidity & Wind
+                if (humidityStatus) humidityStatus.innerText = `${data.main.humidity}%`;
+                if (windStatus) windStatus.innerText = `${Math.round(data.wind.speed * 3.6)} km/h`;
+
+                // Weather Icon
+                if (data.weather && data.weather[0]) {
+                    const iconCode = data.weather[0].icon;
+                    if (weatherIcon) {
+                        weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+                        weatherIcon.style.display = 'block';
+                        weatherIcon.alt = data.weather[0].main;
+                    }
+                    if (weatherEmoji) weatherEmoji.style.display = 'none';
                 }
+
             } catch (error) {
                 console.error("Rainfall Fetch Error:", error);
                 if (rainfallStatus) rainfallStatus.innerText = "Unavailable";
@@ -389,10 +418,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 levelDescription = "EXTREME DANGER: SEEK HIGHER GROUND IMMEDIATELY";
                 notificationTitle = "Flood Alert: Level 3";
             }
-            if(levelDesc) levelDesc.innerText = levelDescription;
+            if (levelDesc) levelDesc.innerText = levelDescription;
 
-            if (lastUpdated) {
-                lastUpdated.innerText = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (lastUpdatedChip) {
+                lastUpdatedChip.innerText = `Updated ${timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
             }
 
             if (waterTrend) {
