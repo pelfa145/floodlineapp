@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flood-safety-v2';
+const CACHE_NAME = 'flood-safety-v3';
 const urlsToCache = [
   './',
   './index.html',
@@ -91,6 +91,22 @@ self.addEventListener('fetch', event => {
       fetch(event.request)
         .then(response => {
           // Cache the successful navigation for offline use
+          if (response.ok) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // For JavaScript modules, use network-first with cache fallback
+  if (event.request.destination === 'script' || event.request.url.endsWith('.js')) {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-cache' })
+        .then(response => {
           if (response.ok) {
             const responseClone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
